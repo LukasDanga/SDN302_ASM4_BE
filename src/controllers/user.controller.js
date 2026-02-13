@@ -15,7 +15,7 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   try {
-    const { username, password } = req.body || {};
+    const { username, password, admin } = req.body || {};
     const normalizedUsername = (username || "").trim().toLowerCase();
 
     if (!normalizedUsername || !password) {
@@ -31,7 +31,10 @@ exports.createUser = async (req, res, next) => {
       return next(err);
     }
 
-    const user = new User({ username: normalizedUsername, password, admin: false });
+    // Allow admin flag from body; coerce string "true"/"false" to boolean, default false
+    const adminFlag = typeof admin === "boolean" ? admin : admin === "true";
+
+    const user = new User({ username: normalizedUsername, password, admin: adminFlag });
     await user.save();
 
     const userInfo = { _id: user._id, username: user.username, admin: user.admin };

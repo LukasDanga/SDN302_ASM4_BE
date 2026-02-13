@@ -5,9 +5,9 @@ const { verifyUser, verifyAdmin } = require("../middleware/authenticate");
 
 router.post("/login", userController.login);
 router.post("/signup", userController.signup);
+router.post("/users" ,userController.createUser);
 router.post("/logout", verifyUser, userController.logout);
 router.get("/users",userController.getAllUsers);
-router.post("/users" ,userController.createUser);
 router.get("/users/:id", userController.viewDetailUser);
 router.put("/users/:id",verifyUser, verifyAdmin,userController.updateUser);
 router.delete("/users/:id",verifyUser,verifyAdmin, userController.deleteUser);

@@ -7,11 +7,10 @@ const userRoutes = require("./routes/user.routes");
 
 const app = express();
 
-// Explicit CORS allowlist for deployed FE and local dev
 const allowedOrigins = [
   process.env.CLIENT_URL,
   process.env.CLIENT_ORIGIN,
-  "https://sdn302asm4done-g8gn0nkw5-lukasdangas-projects.vercel.app/",
+  "https://sdn302asm4done-g8gn0nkw5-lukasdangas-projects.vercel.app",
   "http://localhost:3000",
 ].filter(Boolean);
 
@@ -26,7 +25,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 app.use(express.json());
 
