@@ -7,7 +7,29 @@ const userRoutes = require("./routes/user.routes");
 
 const app = express();
 
-app.use(cors());
+// Explicit CORS allowlist for deployed FE and local dev
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  process.env.CLIENT_ORIGIN,
+  "https://sdn302asm4done-op88g2jnp-lukasdangas-projects.vercel.app",
+  "https://sdn302asm4done-lzgb4858k-lukasdangas-projects.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000",
+].filter(Boolean);
+
+const originSetting = allowedOrigins.length > 0 ? allowedOrigins : "*";
+
+const corsOptions = {
+  origin: originSetting,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 
 app.use("/api", quizRoutes);
