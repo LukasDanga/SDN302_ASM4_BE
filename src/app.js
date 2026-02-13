@@ -21,14 +21,9 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
-  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
-
-// Handle CORS preflight for API routes
-app.options("/api/*", cors(corsOptions));
-app.options("/api", cors(corsOptions));
 
 app.use(express.json());
 
