@@ -11,9 +11,7 @@ const app = express();
 const allowedOrigins = [
   process.env.CLIENT_URL,
   process.env.CLIENT_ORIGIN,
-  "https://sdn302asm4done-op88g2jnp-lukasdangas-projects.vercel.app",
-  "https://sdn302asm4done-lzgb4858k-lukasdangas-projects.vercel.app",
-  "http://localhost:5173",
+  "https://sdn302asm4done-g8gn0nkw5-lukasdangas-projects.vercel.app/",
   "http://localhost:3000",
 ].filter(Boolean);
 
