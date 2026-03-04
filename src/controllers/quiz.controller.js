@@ -1,6 +1,21 @@
 const Quiz = require("../models/Quiz");
 const Question = require("../models/Question");
 
+// Normalize correctAnswerIndex to a number; if a string matches an option, return its index
+const normalizeCorrectIndex = (q) => {
+  const idx = q?.correctAnswerIndex;
+  if (typeof idx === "number") return idx;
+  if (typeof idx === "string") {
+    const asNumber = Number(idx);
+    if (!Number.isNaN(asNumber)) return asNumber;
+    if (Array.isArray(q?.options)) {
+      const pos = q.options.findIndex((opt) => opt === idx);
+      if (pos >= 0) return pos;
+    }
+  }
+  return idx;
+};
+
 exports.getAllQuizzes = async (req, res, next) => {
   try {
     const quizzes = await Quiz.find().populate("questions");
@@ -103,6 +118,7 @@ exports.addQuestionToQuiz = async (req, res, next) => {
     }
     const question = await Question.create({
       ...req.body,
+      correctAnswerIndex: normalizeCorrectIndex(req.body),
       Author: req.user._id,
     });
 
@@ -124,6 +140,7 @@ exports.addManyQuestionsToQuiz = async (req, res, next) => {
   try {
     const payload = (req.body || []).map((q) => ({
       ...q,
+      correctAnswerIndex: normalizeCorrectIndex(q),
       Author: req.user._id,
     }));
 
