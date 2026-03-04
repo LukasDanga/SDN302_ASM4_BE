@@ -122,7 +122,12 @@ exports.addQuestionToQuiz = async (req, res, next) => {
 
 exports.addManyQuestionsToQuiz = async (req, res, next) => {
   try {
-    const questions = await Question.insertMany(req.body);
+    const payload = (req.body || []).map((q) => ({
+      ...q,
+      Author: req.user._id,
+    }));
+
+    const questions = await Question.insertMany(payload);
 
     const quiz = await Quiz.findById(req.params.quizId);
     questions.forEach((q) => quiz.questions.push(q._id));
